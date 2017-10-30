@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1509319536 source:c:\users\pc\google drive\nn\code\nn\main.c
+	<stdio.h>
+	"stdlib.h"
+	<time.h>
+	"math.h"
+	"nnAuxFun.h"
+	<unistd.h>
+	<sys/time.h>
+
+1435476492 c:\tdm_gcc-64a\lib\gcc\x86_64-w64-mingw32\5.1.0\include\omp.h
+
+1509233906 source:c:\users\pc\google drive\nn\code\nn\auxfun.c
+	"math.h"
+
+1509233921 c:\users\pc\google drive\nn\code\nn\nnauxfun.h
+
