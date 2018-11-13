@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1509319536 source:c:\users\pc\google drive\nn\code\nn\main.c
+1542090653 source:c:\users\pc\google drive\nn\code\nn\main.c
 	<stdio.h>
 	"stdlib.h"
 	<time.h>
@@ -10,8 +10,35 @@
 
 1435476492 c:\tdm_gcc-64a\lib\gcc\x86_64-w64-mingw32\5.1.0\include\omp.h
 
-1509233906 source:c:\users\pc\google drive\nn\code\nn\auxfun.c
+1542090695 source:c:\users\pc\google drive\nn\code\nn\auxfun.c
 	"math.h"
 
-1509233921 c:\users\pc\google drive\nn\code\nn\nnauxfun.h
+1541784986 c:\users\pc\google drive\nn\code\nn\nnauxfun.h
+
+1541649786 source:c:\users\pc\google drive\nn\code\nn\loadnn.c
+	<stdio.h>
+	"stdlib.h"
+	<time.h>
+	"math.h"
+	"nnAuxFun.h"
+	<unistd.h>
+	<sys/time.h>
+
+1541446149 source:c:\users\pc\google drive\nn\code\nn\netfunc.c
+	<stdio.h>
+	"stdlib.h"
+	<time.h>
+	"math.h"
+	"nnAuxFun.h"
+	<unistd.h>
+	<sys/time.h>
+
+1542090712 source:c:\users\pc\google drive\nn\code\nn\net.c
+	<stdio.h>
+	"stdlib.h"
+	<time.h>
+	"math.h"
+	"nnAuxFun.h"
+	<unistd.h>
+	<sys/time.h>
 

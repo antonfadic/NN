@@ -5,67 +5,61 @@
 #include "nnAuxFun.h" // nn Auxiliary functions
 #include <unistd.h>
 #include <sys/time.h>
+/*
+Compute a neural network in C based on a Matlab fully connected fitnet
+Anton Fadic
+Chemical and Materials Engineering Nov 2018
+*/
+
 
 int main()
 {
-    //main variables
-    int nDimIn= 4;
-    int nDimOut=1;
-    int nLayers = 6;
-    long start, end;
-    struct timeval timecheck;
-
+    double y=0; //for now y is set for only 1 output
+    double *x=0;
     int i=0;
-    int j=0;
-    int nNeurons[nLayers]; //vector of number of neurons per layer.
-    int nWeights = 0; //number of weights of the net
 
-    //Set the architecture of the net
-    for(i=0; i<nLayers;i++){nNeurons[i]=12; } //set the number of neurons per layer
+    double *ty=0; ty = loadTy();
+    double *tx=0;
 
-    nWeights = calcNumWeights(nNeurons,nDimIn,nDimOut,nLayers);
+    struct timeval timecheck;
+    srand(time(NULL));
+    long start, end;
 
-    printf("nWeights is %i \n",nWeights);
-    printf("Map size is %f kB \n",(double) nWeights*8/1000);
+    x = (double*) malloc(2*sizeof(double));
 
-    double weights[nWeights];
-
-
-    //weights should be considered a tensor of rank 3. w_ijk.
-    //The index i represents the origin neuron, j the arriving neuron and k the layer.
-    //So that the calculation of an intermediate layer is: Ljk = f(w_ijk*Ii+bjk)
-
-    for(i=0;i<nWeights;i++){*(weights+i)= (double) i/nWeights ; }
-
-    //vector of biases
-    //b=*(weights+*(nNeurons+1)); // q wea hice aqui
-
-    double L[nNeurons[1]]; // intermediate layer
-    double input[nDimIn];
-    input[0] = -1; input[1] = -0.3; input[2] = 1; input[3] = 0.5;
+    int *k; double *w;
+    //read weights only once
+    k = readTableConfig();
+    int L0 = *(k+2);
+    tx = loadTx(L0);
 
     gettimeofday(&timecheck, NULL);
+
+    w = readWeights(*k);
+
     start = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
 
-
-    for(i=0;i<nNeurons[1];i++) {
-        L[i] = acFun( dotProd(nDimIn, weights+nNeurons[1]*i,input)); // bias is missing
-    }
-    double L2[nNeurons[1]]; for(i=0;i<nNeurons[1];i++){L2[i]=L[i];}
-
-    for(i=0;i<nNeurons[2];i++) {
-        L[i] = acFun( dotProd(nNeurons[1], weights+nNeurons[1]*i,L2)); // bias is missing
+    for(i=0;i<400000;i++){
+    *x = 0; *(x+1) = 1;
+    x = transformX(x,tx, L0);
+    y = net(x, w, k);
+    y = transformY(y,ty);
     }
 
-    for(i=0;i<nNeurons[2];i++){L2[i]=L[i];}
-
-    for(i=0;i<nNeurons[3];i++) {
-        L[i] = acFun( dotProd(nNeurons[2], weights+nNeurons[1]*i,L2)); // bias is missing
-    }
+    printf("y is %4.4f \n", y);
 
     gettimeofday(&timecheck, NULL);
-    end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec / 1000;
+    end = (long)timecheck.tv_sec * 1000 + (long)timecheck.tv_usec/1000;
 
-    printf("%ld milliseconds elapsed\n", (end - start));
+    printf("Average time is %ld ms \n", (end-start));
+
+    getchar();
+
+    free(k);
+    free(w);
+    free(ty);
+    free(tx);
+    free(x);
+
     return 0;
 }
